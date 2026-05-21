@@ -88,73 +88,87 @@
     <% } %>
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Bỏ qua đến nội dung chính</a>
 
     <!-- Header -->
     <header class="header">
         <div class="container header-inner">
-            <!-- <div class="header-left">
-                <nav class="desktop-nav">
-                    <a href="#products">Sản phẩm</a>
-                    <a href="#prop-firm">Prop Firm</a>
-                    <a href="#platform">Nền tảng</a>
-                </nav>
-            </div> -->
             <div class="logo">
-                <span class="brand-text" style="color: <%= content.brandColor || '#4B5563' %>"><%= content.brandName || 'Trường Giang' %></span>
+                <span class="brand-text" style="color: <%= content.brandColor || '#4B5563' %>"><%= content.brandName || 'Gold Smith Tran' %></span>
+                <span class="brand-tagline"><%= content.brandTagline || 'Nhà Giả Kim Tài Chính' %></span>
             </div>
+            <nav class="desktop-nav" aria-label="Điều hướng chính">
+                <a href="#products">Sản phẩm</a>
+                <a href="#prop-firm">Prop Firm</a>
+                <a href="#platform">Nền tảng</a>
+                <a href="#contact">Tư vấn</a>
+                <a href="#faq">FAQ</a>
+            </nav>
             <div class="header-right">
                 <div class="header-actions">
-                    <a href="#" class="btn-text">Đăng nhập</a>
+                    <a href="/login" class="btn-text">Đăng nhập</a>
                     <a href="#contact" class="btn btn-primary btn-sm">Bắt đầu giao dịch</a>
                 </div>
             </div>
-            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Mở menu" aria-expanded="false" aria-controls="mobileNav">☰</button>
         </div>
     </header>
 
     <!-- Mobile Nav -->
-    <div class="mobile-nav" id="mobileNav">
+    <nav class="mobile-nav" id="mobileNav" aria-label="Điều hướng di động">
         <a href="#products">Sản phẩm</a>
         <a href="#prop-firm">Prop Firm</a>
         <a href="#platform">Nền tảng</a>
+        <a href="#contact">Tư vấn</a>
         <a href="#faq">FAQ</a>
-        <a href="#" class="btn btn-outline">Đăng nhập</a>
+        <a href="/login" class="btn btn-outline">Đăng nhập</a>
         <a href="#contact" class="btn btn-primary">Bắt đầu giao dịch</a>
-    </div>
+    </nav>
+
+    <main id="main-content">
 
     <!-- Hero Section -->
-    <section class="hero section-animate">
+    <section class="hero section-animate" aria-labelledby="hero-title">
         <div class="container hero-inner">
             <div class="hero-content">
                 <div class="eyebrow">Nền tảng giao dịch tài chính cho trader hiện đại</div>
-                <h1 class="hero-headline"><%= content.heroHeadline %></h1>
+                <h1 class="hero-headline" id="hero-title"><%= content.heroHeadline %></h1>
                 <p class="hero-subheadline"><%= content.heroSubheadline %></p>
                 <div class="hero-cta-group">
                     <a href="#contact" class="btn btn-primary btn-lg"><%= content.heroCta1 || 'Bắt đầu giao dịch' %></a>
+                    <a href="#prop-firm" class="btn btn-outline btn-lg"><%= content.heroCta2 || 'Khám phá chương trình cấp vốn' %></a>
                 </div>
-                <p class="trust-microcopy">Mở tài khoản trong vòng 1 phút.</p>
+                <p class="trust-microcopy">Tư vấn điều kiện tài khoản, chi phí và quản trị rủi ro trước khi giao dịch.</p>
+                <div class="hero-proof-row" aria-label="Các điểm nổi bật">
+                    <div class="proof-item">
+                        <span class="proof-value">0.0</span>
+                        <span class="proof-label">Spread từ pip</span>
+                    </div>
+                    <div class="proof-item">
+                        <span class="proof-value">&lt;30ms</span>
+                        <span class="proof-label">Khớp lệnh mục tiêu</span>
+                    </div>
+                    <div class="proof-item">
+                        <span class="proof-value">24/7</span>
+                        <span class="proof-label">Hỗ trợ trader</span>
+                    </div>
+                </div>
             </div>
             <div class="hero-visual">
                 <% if (content.heroImage) { %>
-                <img src="<%= content.heroImage %>" alt="Nền tảng giao dịch <%= content.brandName || 'Trường Giang' %>" class="hero-image">
-                <% } else { %>
-                <div class="dashboard-mockup">
-                    <div class="mockup-header">
-                        <div class="dots"><span></span><span></span><span></span></div>
+                <div class="hero-visual-card">
+                    <img src="<%= content.heroImage %>" alt="Nền tảng giao dịch <%= content.brandName || 'Trường Giang' %>" class="hero-image">
+                    <div class="hero-note">
+                        <strong>Risk-first</strong>
+                        <span>Theo dõi vốn, drawdown và hiệu suất rõ ràng.</span>
                     </div>
-                    <div class="mockup-body">
-                        <div class="chart-area">
-                            <svg viewBox="0 0 100 50" preserveAspectRatio="none" class="chart-line">
-                                <path d="M0,40 Q10,30 20,35 T40,20 T60,25 T80,10 T100,15" fill="none" stroke="#00d084" stroke-width="2"/>
-                                <path d="M0,40 Q10,30 20,35 T40,20 T60,25 T80,10 T100,15 L100,50 L0,50 Z" fill="url(#grad)" opacity="0.2"/>
-                                <defs>
-                                    <linearGradient id="grad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" stop-color="#00d084" stop-opacity="1" />
-                                        <stop offset="100%" stop-color="#00d084" stop-opacity="0" />
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-                        </div>
+                </div>
+                <% } else { %>
+                <div class="hero-visual-card">
+                    <img src="/img/trading-dashboard.png" alt="Minh họa dashboard giao dịch với biểu đồ giá và chỉ số rủi ro" class="hero-image">
+                    <div class="hero-note">
+                        <strong>Risk-first</strong>
+                        <span>Theo dõi vốn, drawdown và hiệu suất rõ ràng.</span>
                     </div>
                 </div>
                 <% } %>
@@ -163,11 +177,15 @@
     </section>
 
     <!-- Quick Benefits (Chips) -->
-    <section class="benefits bg-white">
+    <section class="benefits section-light" aria-label="Lợi ích nhanh">
         <div class="container">
-            <div class="benefits-chips">
-                <% benefitCards.forEach(function(card) { %>
-                <div class="chip"><%= card.title %></div>
+            <div class="benefits-grid">
+                <% benefitCards.forEach(function(card, index) { %>
+                <article class="benefit-card">
+                    <span class="benefit-mark"><%= index + 1 %></span>
+                    <h3><%= card.title %></h3>
+                    <p><%= card.description || 'Điều kiện rõ ràng, phù hợp với trader cần kiểm soát rủi ro.' %></p>
+                </article>
                 <% }) %>
             </div>
         </div>
@@ -176,8 +194,13 @@
     <!-- Trust Section -->
     <section class="trust section-animate">
         <div class="container">
-            <h2 class="section-title text-center">Được xây dựng cho sự minh bạch</h2>
-            <p class="section-desc text-center">Mọi điều kiện tài khoản, phí, quy tắc giao dịch và giới hạn rủi ro cần được trình bày công khai.</p>
+            <div class="section-heading-row">
+                <div>
+                    <div class="section-kicker">Minh bạch trước khi vào lệnh</div>
+                    <h2 class="section-title">Được xây dựng cho trader cần dữ liệu rõ ràng</h2>
+                </div>
+                <p class="section-desc">Mọi điều kiện tài khoản, phí, quy tắc giao dịch và giới hạn rủi ro cần được trình bày công khai trước khi bạn ra quyết định.</p>
+            </div>
             
             <div class="stats-grid">
                 <div class="stat-item">
@@ -201,16 +224,18 @@
     </section>
 
     <!-- Products / Broker -->
-    <section id="products" class="products bg-white section-animate">
+    <section id="products" class="products section-light section-animate">
         <div class="container">
-            <h2 class="section-title">Forex Broker Chuyên Nghiệp</h2>
             <div class="products-inner">
                 <div class="product-info">
+                    <div class="section-kicker">Forex Broker</div>
+                    <h2 class="section-title">Tài khoản giao dịch rõ chi phí, dễ so sánh</h2>
+                    <p>Chọn môi trường giao dịch phù hợp với vốn, phong cách và mức chấp nhận rủi ro của bạn.</p>
                     <ul class="feature-list">
-                        <li>✅ Spread cạnh tranh</li>
-                        <li>✅ Đa dạng sản phẩm giao dịch (Forex, CFD, Crypto)</li>
-                        <li>✅ Tài khoản demo và live</li>
-                        <li>✅ Phù hợp cho trader có vốn cá nhân</li>
+                        <li>Spread cạnh tranh, cấu trúc phí dễ kiểm tra</li>
+                        <li>Đa dạng sản phẩm giao dịch: Forex, CFD, Crypto</li>
+                        <li>Tài khoản demo và live cho từng giai đoạn</li>
+                        <li>Phù hợp cho trader có vốn cá nhân</li>
                     </ul>
                     <a href="#contact" class="btn btn-primary mt-4">Mở tài khoản giao dịch</a>
                 </div>
@@ -251,11 +276,32 @@
         </div>
     </section>
 
+    <!-- Platform -->
+    <section id="platform" class="platform-showcase section-animate">
+        <div class="container platform-inner">
+            <div class="platform-copy">
+                <div class="section-kicker">Nền tảng giao dịch</div>
+                <h2 class="section-title">Theo dõi thị trường và tài khoản trên một luồng gọn</h2>
+                <p>Giao diện được thiết kế để trader xem nhanh trạng thái tài khoản, điều kiện thử thách, biến động thị trường và kênh hỗ trợ khi cần tư vấn.</p>
+                <ul class="platform-list">
+                    <li>Tổng quan vốn, drawdown và hiệu suất</li>
+                    <li>Luồng đăng ký, nạp tiền, tư vấn dễ theo dõi</li>
+                    <li>Tối ưu cho mobile, tablet và desktop</li>
+                </ul>
+                <a href="#contact" class="btn btn-primary">Nhận tư vấn nền tảng</a>
+            </div>
+            <div class="platform-media">
+                <img src="/img/mobile-trading.png" alt="Minh họa ứng dụng giao dịch mobile và bảng thông tin tài khoản" class="platform-image" loading="lazy">
+            </div>
+        </div>
+    </section>
+
     <!-- Prop Firm -->
     <section id="prop-firm" class="prop-firm section-animate">
         <div class="container">
+            <div class="section-kicker text-center">Prop Firm</div>
             <h2 class="section-title text-center">Chương Trình Cấp Vốn (Prop Firm)</h2>
-            <p class="section-desc text-center">Nhận vốn lên đến $200,000 khi vượt qua thử thách và chia sẻ lợi nhuận hấp dẫn.</p>
+            <p class="section-desc text-center">Tiếp cận tài khoản cấp vốn khi vượt qua thử thách theo quy tắc đánh giá, drawdown và chia sẻ lợi nhuận được công bố rõ ràng.</p>
             
             <div class="cards-grid">
                 <div class="pricing-card">
@@ -297,8 +343,9 @@
     </section>
 
     <!-- Process -->
-    <section class="process bg-white section-animate">
+    <section class="process section-light section-animate">
         <div class="container">
+            <div class="section-kicker text-center">Quy trình</div>
             <h2 class="section-title text-center">Quy trình bắt đầu dễ dàng</h2>
             
             <div class="process-grid">
@@ -322,13 +369,15 @@
         <div class="container">
             <div class="contact-inner">
                 <div class="contact-info">
+                    <div class="section-kicker">Liên hệ tư vấn</div>
                     <h2 class="section-title">Nhận Tư Vấn Miễn Phí</h2>
                     <p>Để lại thông tin, đội ngũ chuyên gia của chúng tôi sẽ liên hệ hỗ trợ bạn chọn tài khoản hoặc chương trình Prop Firm phù hợp nhất.</p>
                     <ul class="contact-perks mt-4">
-                        <li>✓ Tư vấn 1-1 miễn phí</li>
-                        <li>✓ Giải đáp mọi thắc mắc về phí và spread</li>
-                        <li>✓ Hướng dẫn nền tảng chi tiết</li>
+                        <li>Tư vấn 1-1 miễn phí</li>
+                        <li>Giải đáp thắc mắc về phí, spread và drawdown</li>
+                        <li>Hướng dẫn nền tảng chi tiết</li>
                     </ul>
+                    <img src="/img/advisor-session.png" alt="Minh họa buổi tư vấn chọn tài khoản và quản trị rủi ro" class="contact-image" loading="lazy">
                 </div>
                 <div class="contact-form-wrapper">
                     <form id="leadForm" class="lead-form">
@@ -356,6 +405,7 @@
     <!-- FAQ -->
     <section id="faq" class="faq-section bg-white section-animate">
         <div class="container">
+            <div class="section-kicker text-center">FAQ</div>
             <h2 class="section-title text-center">Câu hỏi thường gặp</h2>
             <div class="faq-list">
                 <% faqItems.forEach(function(item) { %>
@@ -368,12 +418,15 @@
         </div>
     </section>
 
+    </main>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col brand-col">
-                    <div class="logo-text"><%= content.footerBrand || content.brandName || 'Trường Giang' %></div>
+                    <div class="logo-text"><%= content.footerBrand || content.brandName || 'Gold Smith Tran' %></div>
+                    <p class="brand-tagline footer-tagline"><%= content.brandTagline || 'Nhà Giả Kim Tài Chính' %></p>
                     <p class="mt-2">Nền tảng giao dịch tài chính minh bạch cho trader hiện đại.</p>
                 </div>
                 <div class="footer-col">
@@ -401,7 +454,7 @@
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2026 <%= content.footerBrand || content.brandName || 'Trường Giang' %>. All rights reserved.</p>
+                <p>&copy; 2026 <%= content.footerBrand || content.brandName || 'Gold Smith Tran' %>. All rights reserved.</p>
             </div>
         </div>
     </footer>

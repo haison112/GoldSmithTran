@@ -3,36 +3,105 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const mobileNav = document.getElementById('mobileNav');
 
-    mobileMenuBtn.addEventListener('click', () => {
-        mobileNav.classList.toggle('active');
-    });
+    if (mobileMenuBtn && mobileNav) {
+        mobileMenuBtn.addEventListener('click', () => {
+            const isOpen = mobileNav.classList.toggle('active');
+            mobileMenuBtn.setAttribute('aria-expanded', String(isOpen));
+            mobileMenuBtn.setAttribute('aria-label', isOpen ? 'Đóng menu' : 'Mở menu');
+        });
+    }
 
     // Close mobile nav on click
     document.querySelectorAll('.mobile-nav a').forEach(link => {
         link.addEventListener('click', () => {
-            mobileNav.classList.remove('active');
-        });
-    });
-
-    // Scroll Animation
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
+            if (mobileNav) mobileNav.classList.remove('active');
+            if (mobileMenuBtn) {
+                mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                mobileMenuBtn.setAttribute('aria-label', 'Mở menu');
             }
         });
-    }, observerOptions);
-
-    document.querySelectorAll('.section-animate').forEach(section => {
-        observer.observe(section);
     });
+
+    // Scroll reveal motion
+    const revealSelectors = [
+        '.hero-content',
+        '.hero-visual-card',
+        '.benefit-card',
+        '.section-heading-row',
+        '.stat-item',
+        '.product-info',
+        '.pricing-table-wrapper',
+        '.platform-copy',
+        '.platform-media',
+        '.pricing-card',
+        '.process-step',
+        '.contact-info',
+        '.contact-image',
+        '.lead-form',
+        '.faq-item'
+    ];
+
+    const revealItems = Array.from(document.querySelectorAll(revealSelectors.join(',')))
+        .filter((item, index, items) => items.indexOf(item) === index);
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if ('IntersectionObserver' in window && !reduceMotion && revealItems.length) {
+        const revealTimers = new WeakMap();
+        const revealDelays = new WeakMap();
+
+        document.body.classList.add('reveal-ready');
+
+        const getRevealDirection = (item, groupIndex) => {
+            if (item.matches('.hero-content, .product-info, .platform-copy, .contact-info, .contact-image')) {
+                return 'reveal-from-left';
+            }
+
+            if (item.matches('.hero-visual-card, .pricing-table-wrapper, .platform-media, .lead-form')) {
+                return 'reveal-from-right';
+            }
+
+            if (groupIndex % 3 === 0) return 'reveal-from-left';
+            if (groupIndex % 3 === 2) return 'reveal-from-right';
+            return 'reveal-from-up';
+        };
+
+        revealItems.forEach(item => {
+            const siblingGroup = Array.from(item.parentElement ? item.parentElement.children : [])
+                .filter(child => revealItems.includes(child));
+            const groupIndex = Math.max(siblingGroup.indexOf(item), 0);
+
+            item.classList.add('scroll-reveal', getRevealDirection(item, groupIndex));
+            revealDelays.set(item, Math.min(groupIndex * 90, 270));
+        });
+
+        const revealObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                const item = entry.target;
+                const pendingTimer = revealTimers.get(item);
+
+                if (pendingTimer) {
+                    window.clearTimeout(pendingTimer);
+                }
+
+                if (entry.isIntersecting) {
+                    const timer = window.setTimeout(() => {
+                        item.classList.add('is-revealed');
+                        revealTimers.delete(item);
+                    }, revealDelays.get(item) || 0);
+                    revealTimers.set(item, timer);
+                } else {
+                    item.classList.remove('is-revealed');
+                    revealTimers.delete(item);
+                }
+            });
+        }, {
+            root: null,
+            rootMargin: '0px 0px -10% 0px',
+            threshold: 0.16
+        });
+
+        revealItems.forEach(item => revealObserver.observe(item));
+    }
 
     // Lead Form Submission
     const leadForm = document.getElementById('leadForm');

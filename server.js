@@ -14,11 +14,23 @@ const sessionSecret = process.env.SESSION_SECRET || (!isProduction ? 'dev_sessio
 const siteUrl = process.env.SITE_URL || 'http://localhost:3000';
 const envFbPixelId = process.env.FB_PIXEL_ID || '';
 
-if (!sessionSecret) {
-  throw new Error('SESSION_SECRET is required in production.');
+function validateProductionEnv() {
+  const requiredVars = ['SESSION_SECRET', 'ADMIN_USERNAME', 'ADMIN_PASSWORD', 'SITE_URL'];
+  const missing = [];
+  
+  requiredVars.forEach(varName => {
+    if (!process.env[varName]) {
+      missing.push(varName);
+    }
+  });
+
+  if (missing.length > 0) {
+    throw new Error(`Missing required production environment variables: ${missing.join(', ')}`);
+  }
 }
 
 if (isProduction) {
+  validateProductionEnv();
   app.set('trust proxy', 1);
 }
 
@@ -78,12 +90,13 @@ ensureAdminUser();
 
 // Default content
 const defaultContent = {
-  seoTitle: 'Nền tảng giao dịch Forex & Prop Firm chuyên nghiệp cho Trader',
-  seoDescription: 'Khám phá nền tảng giao dịch tài chính dành cho trader: điều kiện giao dịch minh bạch, công nghệ khớp lệnh nhanh, chương trình cấp vốn Prop Firm.',
+  seoTitle: 'Gold Smith Tran - Nhà Giả Kim Tài Chính',
+  seoDescription: 'Gold Smith Tran - Nhà Giả Kim Tài Chính, nền tảng tư vấn và giao dịch tài chính minh bạch dành cho trader hiện đại.',
   ogImage: '',
   facebookPixelId: '',
-  brandName: 'Trường Giang',
+  brandName: 'Gold Smith Tran',
   brandColor: '#4B5563',
+  brandTagline: 'Nhà Giả Kim Tài Chính',
   heroHeadline: 'Giao dịch Forex và tiếp cận tài khoản cấp vốn trên một hệ sinh thái minh bạch',
   heroSubheadline: 'Trải nghiệm điều kiện giao dịch cạnh tranh, công nghệ khớp lệnh nhanh, chương trình đánh giá trader rõ ràng và hệ thống hỗ trợ được thiết kế cho nhà giao dịch nghiêm túc.',
   heroCta1: 'Bắt đầu giao dịch',
@@ -105,7 +118,7 @@ const defaultContent = {
     { question: 'Forex Broker và Prop Firm khác nhau thế nào?', answer: 'Forex Broker cung cấp môi trường giao dịch, còn Prop Firm cung cấp chương trình đánh giá và cấp vốn theo điều kiện.' },
     { question: 'Giao dịch tài chính có rủi ro không?', answer: 'Có. Forex, CFD và sản phẩm phái sinh có rủi ro cao và không phù hợp với mọi nhà đầu tư.' }
   ]),
-  footerBrand: 'Trường Giang',
+  footerBrand: 'Gold Smith Tran',
   footerDisclaimer: 'Giao dịch ngoại hối, CFD và các sản phẩm phái sinh có mức độ rủi ro cao và có thể không phù hợp với mọi nhà đầu tư. Nội dung trên website chỉ nhằm mục đích cung cấp thông tin, không phải lời khuyên đầu tư, không cam kết lợi nhuận và không đảm bảo kết quả giao dịch trong tương lai.',
   zaloUrl: 'https://zalo.me/yourzalo',
   phoneNumber: '19001234'
@@ -398,5 +411,8 @@ app.post('/api/admin/upload', isAuthenticated, (req, res) => {
 
 // Start Server
 app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+  console.log(`Server started successfully!`);
+  console.log(`- Environment: ${isProduction ? 'production' : 'development'}`);
+  console.log(`- Port: ${port}`);
+  console.log(`- Site URL: ${siteUrl}`);
 });
